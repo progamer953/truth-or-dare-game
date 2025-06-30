@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Private Truth or Dare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Multiplayer Truth or Dare</title>
   <style>
     body {
       margin: 0;
@@ -16,7 +16,6 @@
     }
 
     .container {
-      display: none;
       background: white;
       padding: 2rem;
       border-radius: 20px;
@@ -76,21 +75,6 @@
 </head>
 <body>
 
-  <!-- Password prompt -->
-  <script>
-    const secretPassword = "londonbridge2025$"; 
-
-    const userPass = prompt("🔒 This site is private. Enter the password:");
-    if (userPass === secretPassword) {
-      document.addEventListener("DOMContentLoaded", () => {
-        document.querySelector(".container").style.display = "block";
-      });
-    } else {
-      document.body.innerHTML = "<h1 style='color: white;'>❌ Access Denied</h1>";
-    }
-  </script>
-
-  <!-- Game container (hidden by default) -->
   <div class="container">
     <h1>Multiplayer Truth or Dare 🎉</h1>
 
@@ -99,7 +83,7 @@
       <option value="dare">Dare</option>
       <option value="truth">Truth</option>
     </select>
-
+    
     <div id="prompt">Enter players and choose a mode!</div>
 
     <button onclick="startGame()">Start Game</button>
