@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Private Truth or Dare</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      display: none;
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    input {
+      padding: 0.5rem;
+      width: 100%;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button, select {
+      background-color: #6c63ff;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin: 0.5rem 0.3rem;
+    }
+
+    button:hover, select:hover {
+      background-color: #5548d8;
+    }
+
+    select {
+      padding: 0.6rem 1rem;
+    }
+
+    #prompt {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+      min-height: 60px;
+      color: #444;
+    }
+
+    .footer {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Password prompt -->
+  <script>
+    const secretPassword = "londonbridge2025$"; 
+
+    const userPass = prompt("🔒 This site is private. Enter the password:");
+    if (userPass === secretPassword) {
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelector(".container").style.display = "block";
+      });
+    } else {
+      document.body.innerHTML = "<h1 style='color: white;'>❌ Access Denied</h1>";
+    }
+  </script>
+
+  <!-- Game container (hidden by default) -->
+  <div class="container">
+    <h1>Multiplayer Truth or Dare 🎉</h1>
+
+    <input id="playerInput" placeholder="Enter player names, separated by commas" />
+    <select id="mode">
+      <option value="dare">Dare</option>
+      <option value="truth">Truth</option>
+    </select>
+
+    <div id="prompt">Enter players and choose a mode!</div>
+
+    <button onclick="startGame()">Start Game</button>
+    <button onclick="generatePrompt()">Next Turn</button>
+    <button onclick="resetGame()">Reset</button>
+
+    <div class="footer">Nice dares only 💬</div>
+  </div>
+
+  <script>
+    const dares = [
+      "Do your best animal impression 🐒",
+      "Sing a song for 10 seconds 🎤",
+      "Do 5 jumping jacks 🏃",
+      "Speak in an accent for the next round 🇬🇧",
+      "Make up a short dance 💃",
+      "Tell a joke or pun 🤪",
+      "Act like a robot for 20 seconds 🤖",
+      "Draw a smiley face in the air ✍️",
+      "Pretend you're on a cooking show 🍳",
+      "Give yourself a silly nickname 😆"
+    ];
+
+    const truths = [
+      "What’s your favorite movie and why? 🎬",
+      "What’s something that always makes you smile? 😊",
+      "If you could have any superpower, what would it be? 🦸",
+      "What's one thing you're really proud of? 🏆",
+      "What’s your biggest dream? ✨",
+      "What’s your happiest memory? 🥰",
+      "If you had a pet dragon, what would you name it? 🐉",
+      "What’s something kind you’ve done recently? 💖",
+      "What’s your favorite food ever? 🍕",
+      "If you could visit anywhere, where would you go? 🌍"
+    ];
+
+    let remainingDares = [...dares];
+    let remainingTruths = [...truths];
+    let players = [];
+    let currentPlayers = [];
+
+    function startGame() {
+      const input = document.getElementById("playerInput").value;
+      if (!input.trim()) {
+        document.getElementById("prompt").textContent = "⚠️ Please enter at least one player.";
+        return;
+      }
+      players = input.split(",").map(p => p.trim()).filter(p => p !== "");
+      currentPlayers = [...players];
+      document.getElementById("prompt").textContent = `Game started with ${players.length} players! Click "Next Turn" to begin.`;
+    }
+
+    function generatePrompt() {
+      const mode = document.getElementById("mode").value;
+      const promptDisplay = document.getElementById("prompt");
+
+      if (players.length === 0) {
+        promptDisplay.textContent = "⚠️ Start the game first.";
+        return;
+      }
+
+      if (currentPlayers.length === 0) {
+        currentPlayers = [...players]; // Start new round
+      }
+
+      const playerIndex = Math.floor(Math.random() * currentPlayers.length);
+      const chosenPlayer = currentPlayers.splice(playerIndex, 1)[0];
+
+      let list = mode === "dare" ? remainingDares : remainingTruths;
+
+      if (list.length === 0) {
+        promptDisplay.textContent = `🎉 All ${mode}s used! Click "Reset" to play again.`;
+        return;
+      }
+
+      const promptIndex = Math.floor(Math.random() * list.length);
+      const selectedPrompt = list.splice(promptIndex, 1)[0];
+
+      promptDisplay.textContent = `${chosenPlayer}, your ${mode} is: ${selectedPrompt}`;
+    }
+
+    function resetGame() {
+      remainingDares = [...dares];
+      remainingTruths = [...truths];
+      players = [];
+      currentPlayers = [];
+      document.getElementById("playerInput").value = "";
+      document.getElementById("prompt").textContent = "Game reset. Enter player names to start again!";
+    }
+  </script>
+
+</body>
+</html>
